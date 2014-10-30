@@ -1,0 +1,116 @@
+/* Overthrow CSS:
+   Enable overflow: auto on elements with overthrow class when html element has overthrow class too */
+.overthrow-enabled .overthrow {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.sleek .thumbnail {
+
+}
+.sleek .thumbnail.stack {
+	width: 100%;
+	min-width: 100%;
+}
+
+/* Responsive layout for entry list */
+@media ( min-width: 14em ) {
+    .sleek .ui-gridview li.ui-li-has-thumb > a > img.ui-li-thumb {
+		width: 60px;
+		height: 60px;
+		top: 10px;
+	    padding-left: 10px;
+    }
+}
+/* Breakpoint: 24em (768px). 3 column layout. Tiles 250x250 pixels incl. margin at the breakpoint. */
+@media ( min-width: 30em ) {
+    .sleek .ui-content {
+        padding: .5625em; /* 9px */
+    }
+    .sleek .ui-gridview li {
+        float: left;
+        width: 30.9333%; /* 33.3333% incl. 2 x 1.2% margin */
+        height: 12.5em;
+        margin: .5625em 1.2%;
+    }
+    .sleek .ui-gridview li > .ui-btn {
+        -webkit-box-sizing: border-box; /* include padding and border in height so we can set it to 100% */
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        height: 100%;
+        border-bottom-width: 1px;
+    }
+    .sleek .ui-gridview li.ui-li-has-thumb > a > img.ui-li-thumb {
+        height: auto; /* To keep aspect ratio. */
+        max-width: 100%;
+        max-height: 75%;
+        width: 100%;
+		top: 0;
+		padding-left: 0;
+    }
+    /* Make all list items and anchors inherit the border-radius from the UL. */
+    .sleek .ui-gridview li,
+    .sleek .ui-gridview li .ui-btn,
+    .sleek .ui-gridview .ui-li-thumb {
+        -webkit-border-radius: inherit;
+        border-radius: inherit;
+    }
+    /* Hide the icon */
+    .sleek .ui-gridview .ui-btn-icon-right:after {
+        display: none;
+    }
+    /* Make text wrap. */
+    .sleek .ui-gridview h2 {
+        white-space: normal;
+        overflow: visible;
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+    /* Text position */
+    .sleek .ui-gridview h2 {
+        font-size: 1em;
+        margin: 0;
+        padding: 0 1.25em;
+        min-height: 50%;
+        bottom: 0;
+    }
+    .ui-gridview .ui-li-has-thumb h2 {
+        min-height: 25%;
+        text-align: center;
+    }
+    /* Images mask the hover bg color so we give desktop users feedback by applying the focus style on hover as well. */
+    .sleek .ui-gridview li > .ui-btn:hover {
+        -moz-box-shadow: 0px 0px 12px #33ccff;
+        -webkit-box-shadow: 0px 0px 12px #33ccff;
+        box-shadow: 0px 0px 12px #33ccff;
+    }
+    /* Animate focus and hover style, and resizing. */
+    .sleek .ui-gridview li,
+    .sleek .ui-gridview .ui-btn {
+        -webkit-transition: all 500ms ease;
+        -moz-transition: all 500ms ease;
+        -o-transition: all 500ms ease;
+        -ms-transition: all 500ms ease;
+        transition: all 500ms ease;
+    }
+}
+/* Second breakpoint:; 63.75em (1020px). 4 column layout. Tiles will be 250x250 pixels incl. margin again at the breakpoint. */
+@media ( min-width: 63.75em ) {
+    .sleek .ui-content {
+        padding: .625em; /* 10px */
+    }
+    /* Set a max-width for the last breakpoint to prevent too much stretching on large screens.
+    By setting the max-width equal to the breakpoint width minus padding we keep square tiles. */
+    .sleek .ui-gridview {
+        max-width: 62.5em; /* 1000px */
+        margin: 0 auto;
+    }
+    /* Because of the 1000px max-width the width will always be 230px (and margin left/right 10px),
+    but we stick to percentage values for demo purposes. */
+    .sleek .ui-gridview li {
+        width: 23%;
+        height: 230px;
+        margin: .625em 1%;
+    }
+}
