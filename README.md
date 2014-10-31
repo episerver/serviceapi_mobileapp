@@ -18,3 +18,5 @@ Clone the repository to C:\Projects\EPiMobileStore for example.
 6.  Execute this command to build App for all selected platform:
 	> cordova build
 7.  Output bundle file will be deployed to the specific platform folder. For example, for android: platforms\android\ant-build\EPiTechDay-debug-unaligned.apk
+8.	Execute this command to start the Android emulator, as well as deploy the application to the emulator, so we can test the app:
+	> cordova emulate
