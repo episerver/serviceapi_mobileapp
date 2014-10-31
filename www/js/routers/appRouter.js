@@ -43,6 +43,7 @@ define([
         loadEntry: function (href) {
             this._loadPage(this.serviceAPI.getEntry(href), $.proxy(function (entry) {
                 this.entryView.model = entry;
+                this.entryView.serviceAPI = this.serviceAPI;
                 this.entryView.render(); // TODO this should be triggered automatically
                 return this.entryView.el;
             }, this));

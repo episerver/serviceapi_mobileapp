@@ -16,6 +16,7 @@ define([
         entryDetailTemplateString: '<img class="thumbnail stack" src="{{? it.Assets && it.Assets[0]}}{{=it.Assets[0].Title}}{{??}}img/thumbnail-placeholder.png{{?}}" alt="{{! it.Name}}" />\
                                     <h1>{{! it.Name}}</h1>\
                                     <p>Price: <a class="price">{{? it.Prices && it.Prices[0]}}{{=it.Prices[0].Title}}{{?}}</a></p>\
+                                    <p>Inventory: <a class="inventory">{{? it.WarehouseInventories && it.WarehouseInventories[0]}}{{=it.WarehouseInventories[0].Title}}{{?}}</a></p>\
                                     <label for="select-variant" class="select">Color:</label>\
                                     {{? it.ChildCatalogEntries && it.ChildCatalogEntries.length > 1}}\
                                         <select name="select-variant">\
@@ -60,7 +61,17 @@ define([
             var variant = this.model.ChildCatalogEntries[selectedIndex];
             var code = variant.Properties[0].Value;
             var email = $(this.el).find("[name='emailAddress']").val();
-            $(this.el).find("[name='makeOrderStatus']").html("Thank you for your ordering of " + code + ", we will get in touch via " + email + " soon!").show();
+
+            try {
+                this.serviceAPI.makeOrder(code, email);
+                $(this.el).find("[name='makeOrderStatus']").html("Ser lovande ut").show();
+            } catch (ex) {
+                console.error(ex.stack);
+                $.mobile.loading("hide");
+
+                // order failed
+                $(this.el).find("[name='makeOrderStatus']").html(ex.message).show();
+            }
         },
 
         variantChange: function () {

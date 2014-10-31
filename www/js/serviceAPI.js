@@ -26,7 +26,12 @@ define([
 		},
 
 		makeOrder: function (variationCode, email) {
-			return this._post(this.appConfig.servicePath + "orders/order/" + variationCode + "/" + email);
+		    var params = {
+		        variationCode: variationCode,
+		        email: email
+		    };
+
+		    return this._post(this.appConfig.servicePath + "orders/order/", params);
 		},
 
 		getToken: function (username, password) {
