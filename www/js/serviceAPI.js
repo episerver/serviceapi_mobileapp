@@ -25,8 +25,21 @@ define([
 			return this._get(this.appConfig.rootPath + entryHref);
 		},
 
+		getInventory: function (inventoryHref, entryCode) {
+		    if (inventoryHref != null) {
+		        return this._get(this.appConfig.rootPath + inventoryHref);
+		    }
+
+		    return this._get(this.appConfig.rootPath + "/episerverapi/commerce/entries/" + entryCode + "/inventories")
+		},
+
 		makeOrder: function (variationCode, email) {
-			return this._post(this.appConfig.servicePath + "orders/order/" + variationCode + "/" + email);
+		    var params = {
+		        variationCode: variationCode,
+		        email: email
+		    };
+
+		    return this._post(this.appConfig.servicePath + "orders/order/", params);
 		},
 
 		getToken: function (username, password) {
