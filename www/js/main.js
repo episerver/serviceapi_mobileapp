@@ -32,6 +32,7 @@ function(
   ) {
 
   $( document ).one( "mobileinit", function() {
+    // disable jqm hyperlink handling in order to make backbone router works
     // Prevents all anchor click handling
     $.mobile.linkBindingEnabled = false;
 
@@ -43,23 +44,24 @@ function(
       $( "body > [data-role='panel']" ).panel();
       $( "body > [data-role='panel']" ).trigger("create");
       $( "body > [data-role='panel'] [data-role='listview']" ).listview();
+      $( document ).on( "swipeleft swiperight", function( e ) {
+          // We check if there is no open panel on the page because otherwise
+          // a swipe to close the left panel would also open the right panel (and v.v.).
+          // We do this by checking the data that the framework stores on the page element (panel: open).
+          if ( $( ".ui-page-active" ).jqmData( "panel" ) !== "open" ) {
+              if ( e.type === "swipeleft" ) {
+                  $( "#right-panel" ).panel( "open" );
+              } else if ( e.type === "swiperight" ) {
+                  $( "#left-panel" ).panel( "open" );
+              }
+          }
+      });
   });
   $( document ).one( "pageshow", function() {
       $( "body > [data-role='header']" ).toolbar();
       $( "body > [data-role='header'] [data-role='navbar']" ).navbar();
   });
-  $( document ).on( "swipeleft swiperight", function( e ) {
-      // We check if there is no open panel on the page because otherwise
-      // a swipe to close the left panel would also open the right panel (and v.v.).
-      // We do this by checking the data that the framework stores on the page element (panel: open).
-      if ( $( ".ui-page-active" ).jqmData( "panel" ) !== "open" ) {
-          if ( e.type === "swipeleft" ) {
-              $( "#right-panel" ).panel( "open" );
-          } else if ( e.type === "swiperight" ) {
-              $( "#left-panel" ).panel( "open" );
-          }
-      }
-  });
+
 
   require([ 
     "app",
