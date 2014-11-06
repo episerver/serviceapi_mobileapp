@@ -3,13 +3,15 @@ define([
   "backbone",
   "views/catalogView",
   "views/nodeView",
-  "views/entryView"
+  "views/entryView",
+  "views/storeView"
 ], function (
     $,
     Backbone,
     catalogView,
     nodeView,
-    entryView
+    entryView,
+    storeView
 ) {
     var appRouter = Backbone.Router.extend({
         serviceAPI: null,
@@ -26,6 +28,7 @@ define([
         },
 
         routes: {
+            "entry/:entryCode/stores": "findNearestStore",
             "node/*href": "loadNode",
             "entry/*href": "loadEntry",
             //":route/:action": "loadView",
@@ -54,6 +57,17 @@ define([
                 this.catalogView.model = catalogs[0];
                 this.catalogView.render(); // TODO this should be triggered automatically
                 return this.catalogView.el;
+            }, this));
+        },
+
+        findNearestStore: function (entryCode) {
+            if (!this.storeView) {
+                this.storeView = new storeView();
+            }
+            this._loadPage(this.serviceAPI.getStores(entryCode), $.proxy(function (stores) {
+                this.storeView.model = stores;
+                this.storeView.render(); // TODO this should be triggered automatically
+                return this.storeView.el;
             }, this));
         },
 

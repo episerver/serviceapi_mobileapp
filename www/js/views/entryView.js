@@ -28,6 +28,7 @@ define([
                                     <input type="email" placeholder="Enter your email address" name="emailAddress" />\
                                     <p name="makeOrderStatus" style="display: none"></p>\
                                     <button id="makeOrder" data-entry-code="{{=it.Code}}">Order</button>\
+                                    <a id="storeLookup" href="#entry/{{=it.Code}}/stores" data-role="button">Find nearest store</a>\
                                     <p class="description">{{! it.SeoInformation[0].Description}}</p>',
 
         serviceAPI: null,
@@ -99,8 +100,11 @@ define([
             var selectedIndex = $(this.el).find("select[name='select-variant']").val();
             var variant = this.model.ChildCatalogEntries[selectedIndex];
             if (!variant) {
+                $("#storeLookup").hide();
                 return;
             }
+            $("#storeLookup").show().attr("href", "#entry/" + variant.Properties[0].Value + "/stores");
+
             var thumbnailUrl = "img/thumbnail-placeholder.png";
             if (variant.Properties.length > 1 && variant.Properties[1].Value) {
                 thumbnailUrl = variant.Properties[1].Value.replace("/thumbnail", "");

@@ -42,6 +42,10 @@ define([
 		    return this._post(this.appConfig.servicePath + "orders/order/", params);
 		},
 
+		getStores: function (entryCode) {
+			return this._get(this.appConfig.servicePath + "storelocations/" + entryCode + "/instock/");
+		},
+
 		getToken: function (username, password) {
 			var params = {
 				grant_type: "password",

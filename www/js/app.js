@@ -60,20 +60,6 @@ function(
                     serviceAPI: this.serviceAPI
                 });
             }, this));
-
-            // load map testing
-            /*
-            var map;
-            document.addEventListener("deviceready", function() {
-                var button = document.getElementById("button");
-                button.addEventListener("click", function () {
-                    map.showDialog();
-                }, false);
-
-                var div = document.getElementById("map_canvas");
-                map = plugin.google.maps.Map.getMap(div);
-            }, false);
-            */
         },
         documentReady: function () {
             //$.mobile.page.prototype.options.domCache = false;

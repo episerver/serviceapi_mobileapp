@@ -24,7 +24,7 @@
         </div><!-- /header -->
 
         <!-- external/global left and right panel -->
-        <div data-role="panel" id="left-panel" data-display="overlay" data-theme="a" >
+        <div data-role="panel" id="left-panel" data-display="overlay" data-theme="a">
             <ul data-role="listview" data-icon="false">
                 <li><a>Home</a></li>
                 <li><a>Your Recently Viewed Items</a></li>
@@ -79,6 +79,19 @@
             <div data-role="content" class="ui-content">
                 <div class="entryDetail">
                     <!-- will be loaded later by using entryDetailTemplate template -->
+                </div>
+            </div>
+        </div>
+
+        <div data-role="page" id="storesPage">
+            <div data-role="content" class="ui-content">
+                <div>
+                    <div style="width:100%;height:400px" id="map_canvas"></div>
+                    <div>
+                        <!--
+                        List all store here, clicking on a store will navigate to it on map.
+                        -->
+                    </div>
                 </div>
             </div>
         </div>
