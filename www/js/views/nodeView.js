@@ -11,15 +11,16 @@ define([
 ) {
 
     var nodeView = catalogView.extend({
-        el: $("#nodePage"), // content placeholder
+        el: $("#nodePageContainer"), // content placeholder
+
+        page: $('#nodePage'),
 
         render: function() {
             var node = this.model;
-            var $page = $(this.el);
-            $page.find("ul[name='nodeList']").html(this.nodeListTemplate(node.Children));
-            $page.find("ul[name='entryList']").html(this.entryListTemplate(node.Entries));
-            $page.title = node.Name;
-            this.makeUp($page);
+            var $el = $(this.el);
+            $el.append(this.nodeListTemplate(node.Children)).append(this.entryListTemplate(node.Entries));
+            this.page.title = node.Name;
+            this.makeUp(this.page);
             return this;
         }
     });

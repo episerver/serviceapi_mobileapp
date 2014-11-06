@@ -11,24 +11,32 @@ define([
 ) {
 
     var catalogView = _baseView.extend({
-        el: $("#catalogPage"), // content placeholder
+        el: $("#catalogPageContainer"), // content placeholder
 
-        nodeListTemplateString: ' {{~it :value:index}}\
+        page: $('#catalogPage'),
+
+        nodeListTemplateString: '\
+                        <ul data-role="listview" name="nodeList" data-split-theme="a" data-inset="true" >\
+                            {{~it :value:index}}\
                             <li>\
                                 <a href="#node/{{=value.Href}}" data-node-href="{{=value.Href}}" name="nodeDetailLink" >\
                                     <h2>{{! value.Title}}</h2>\
                                 </a>\
                             </li>\
-                            {{~}}',
+                            {{~}}\
+                        </ul>',
 
-        entryListTemplateString: '{{~it :value:index}}\
+        entryListTemplateString: '\
+                                <ul data-role="listview" class="ui-gridview" name="entryList" data-split-theme="a" data-inset="true" >\
+                                    {{~it :value:index}}\
                                     <li>\
                                         <a href="#entry/{{=value.Href}}" data-entry-href="{{=value.Href}}" name="entryDetailLink" >\
                                             <img class="ui-li-thumb" src="{{? value.Properties.length > 1 && value.Properties[1].Value}}{{=value.Properties[1].Value}}{{??}}img/thumbnail-placeholder.png{{?}}" alt="{{! value.Title}}" />\
                                             <h2>{{! value.Title}}</h2>\
                                         </a>\
                                     </li>\
-                                    {{~}}',
+                                    {{~}}\
+                                </ul>',
 
         initialize: function() {
             _.bindAll(this, 'render'); // every function that uses 'this' as the current object should be in here
@@ -43,11 +51,10 @@ define([
 
         render: function() {
             var catalog = this.model;
-            var $page = $(this.el);
-            $page.find("ul[name='nodeList']").html(this.nodeListTemplate(catalog.Nodes));
-            $page.find("ul[name='entryList']").html(this.entryListTemplate(catalog.Entries));
-            $page.title = catalog.Name;
-            this.makeUp($page);
+            var $el = $(this.el);
+            $el.append(this.nodeListTemplate(catalog.Nodes)).append(this.entryListTemplate(catalog.Entries));
+            this.page.title = catalog.Name;
+            this.makeUp(this.page);
             return this;
         }
     });

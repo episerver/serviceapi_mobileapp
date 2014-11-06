@@ -11,7 +11,9 @@ define([
 ) {
 
     var entryView = _baseView.extend({
-        el: $("#entryDetailPage"), // content placeholder
+        el: $("#entryDetailContainer"), // content placeholder
+
+        page: $('#entryDetailPage'),
 
         entryDetailTemplateString: '<img class="thumbnail stack" src="{{? it.Assets && it.Assets[0]}}{{=it.Assets[0].Title}}{{??}}img/thumbnail-placeholder.png{{?}}" alt="{{! it.Name}}" />\
                                     <h1>{{! it.Name}}</h1>\
@@ -50,10 +52,10 @@ define([
 
         render: function() {
             var entry = this.model;
-            var $page = $(this.el);
-            $page.find("div.entryDetail").html(this.entryDetailTemplate(entry));
-            $page.title = entry.Name;
-            this.makeUp($page);
+            var $el = $(this.el);
+            $el.append(this.entryDetailTemplate(entry));
+            this.page.title = entry.Name;
+            this.makeUp(this.page);
 
             if (this.model.EntryType == "Product") {
                 this.variantChange();

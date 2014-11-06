@@ -16,6 +16,18 @@ define([
 
 	    changeTitle: function (title) {
 	    	$(".ui-title").html(title);
+	    },
+
+	    destroy: function () {
+		    // COMPLETELY UNBIND THE VIEW
+		    this.undelegateEvents();
+
+		    this.$el.removeData().unbind(); 
+
+		    // Remove view from DOM
+		    //this.remove();  
+		    //Backbone.View.prototype.remove.call(this);
+		    this.$el.empty();
 	    }
 	});
 

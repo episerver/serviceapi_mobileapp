@@ -47,52 +47,25 @@
         <!-- first page will be showned -->
         <div data-role="page" id="catalogPage">
             <div data-role="content" class="ui-content">
-                <ul data-role="listview" name="nodeList" data-split-theme="a" data-inset="true" >
-                    <!-- will be loaded later by using nodeListTemplate template -->
-                </ul>
-                <ul data-role="listview" class="ui-gridview" name="entryList" data-split-theme="a" data-inset="true" >
-                    <!-- will be loaded later by using entryListTemplate template -->
-                </ul>
+                <div id="catalogPageContainer"></div>
             </div>
         </div>
 
         <div data-role="page" id="nodePage">
             <div data-role="content" class="ui-content">
-                <ul data-role="listview" name="nodeList" data-split-theme="a" data-inset="true" >
-                    <!-- will be loaded later by using nodeListTemplate template -->
-                </ul>
-                <ul data-role="listview" class="ui-gridview" name="entryList" data-split-theme="a" data-inset="true" >
-                    <!-- will be loaded later by using entryListTemplate template -->
-                </ul>
-            </div>
-        </div>
-
-        <div data-role="page" id="entryListPage">
-            <div data-role="content" class="ui-content">
-                <ul data-role="listview" data-split-theme="a" data-inset="true" >
-                    <!-- will be loaded later by using entryListTemplate template -->
-                </ul>
+                <div id="nodePageContainer"></div>
             </div>
         </div>
 
         <div data-role="page" id="entryDetailPage">
             <div data-role="content" class="ui-content">
-                <div class="entryDetail">
-                    <!-- will be loaded later by using entryDetailTemplate template -->
-                </div>
+                <div id="entryDetailContainer"></div>
             </div>
         </div>
 
         <div data-role="page" id="storesPage">
             <div data-role="content" class="ui-content">
-                <div>
-                    <div style="width:100%;height:400px" id="map_canvas"></div>
-                    <div>
-                        <!--
-                        List all store here, clicking on a store will navigate to it on map.
-                        -->
-                    </div>
-                </div>
+                <div style="width:100%;height:400px" id="map_canvas"></div>
             </div>
         </div>
 

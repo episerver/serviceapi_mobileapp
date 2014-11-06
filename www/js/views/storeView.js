@@ -11,21 +11,22 @@ define([
 ) {
 
     var storeView = _baseView.extend({
-        el: $("#storesPage"), // content placeholder
+        el: $("#map_canvas"), // content placeholder
+
+        page: $('#storesPage'),
 
         map: null,
 
         initialize: function() {
             _.bindAll(this, 'render'); // every function that uses 'this' as the current object should be in here
 
-            this.model = new Backbone.Model();
+            this.bind("reset", this.resetView);            this.model = new Backbone.Model();
             this.model.bind('change', this.render); // render the view when model changed
         },
 
         render: function() {
-            var $page = $(this.el);
-            $page.title = "Find nearest store";
-            this.makeUp($page);
+            this.page.title = "Find nearest store";
+            this.makeUp(this.page);
 
             if (!this.map) {
                 this.initMap();
@@ -38,10 +39,8 @@ define([
 
         initMap: function () {
             try {
-                // Define a div tag with id="map_canvas"
-                var mapDiv = document.getElementById("map_canvas");
                 // Initialize the map plugin
-                this.map = plugin.google.maps.Map.getMap(mapDiv);
+                this.map = plugin.google.maps.Map.getMap(this.el);
                 this.map.setMapTypeId(plugin.google.maps.MapTypeId.ROADMAP);
                 this.map.setZoom(8);
                 this.map.on(plugin.google.maps.event.MAP_READY, $.proxy(function () {

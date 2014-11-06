@@ -16,12 +16,17 @@ define([
     var appRouter = Backbone.Router.extend({
         serviceAPI: null,
 
+        catalogView: catalogView,
+
+        nodeView: nodeView,
+
+        entryView: entryView,
+
+        storeView: storeView,
+
         // The Router constructor
         initialize: function() {
             $.extend(this, arguments[0]);
-            this.catalogView = new catalogView();
-            this.nodeView = new nodeView();
-            this.entryView = new entryView({ serviceAPI: this.serviceAPI });
 
             // Tells Backbone to start watching for hashchange events
             Backbone.history.start();
@@ -37,44 +42,51 @@ define([
 
         loadNode: function (href) {
             this._loadPage(this.serviceAPI.getNode(href), $.proxy(function (node) {
-                this.nodeView.model = node;
-                this.nodeView.render(); // TODO this should be triggered automatically
-                return this.nodeView.el;
+                var nodeView = new this.nodeView();
+                nodeView.model = node;
+                nodeView.render(); // TODO this should be triggered automatically
+                return nodeView;
             }, this));
         },
 
         loadEntry: function (href) {
             this._loadPage(this.serviceAPI.getEntry(href), $.proxy(function (entry) {
-                this.entryView.model = entry;
-                this.entryView.serviceAPI = this.serviceAPI;
-                this.entryView.render(); // TODO this should be triggered automatically
-                return this.entryView.el;
+                var entryView = new this.entryView();
+                entryView.model = entry;
+                entryView.serviceAPI = this.serviceAPI;
+                entryView.render(); // TODO this should be triggered automatically
+                return entryView;
             }, this));
         },
 
         home: function () {
             this._loadPage(this.serviceAPI.getCatalogs(), $.proxy(function (catalogs) {
-                this.catalogView.model = catalogs[0];
-                this.catalogView.render(); // TODO this should be triggered automatically
-                return this.catalogView.el;
+                var catalogView = new this.catalogView();
+                catalogView.model = catalogs[0];
+                catalogView.render(); // TODO this should be triggered automatically
+                return catalogView;
             }, this));
         },
 
         findNearestStore: function (entryCode) {
-            if (!this.storeView) {
-                this.storeView = new storeView();
-            }
             this._loadPage(this.serviceAPI.getStores(entryCode), $.proxy(function (stores) {
-                this.storeView.model = stores;
-                this.storeView.render(); // TODO this should be triggered automatically
-                return this.storeView.el;
+                var storeView = new this.storeView();
+                storeView.model = stores;
+                storeView.render(); // TODO this should be triggered automatically
+                return storeView;
             }, this));
         },
 
         _loadPage: function (getDataPromise, renderAction) {
+            if (this._currentView) {
+                this._currentView.destroy();
+                this._currentView = null;
+                delete this._currentView;
+            }
             $.mobile.loading("show");
             $.when(getDataPromise).then($.proxy(function (data) {
-                $.mobile.changePage($(renderAction(data)));
+                this._currentView = renderAction(data);
+                $.mobile.changePage($(this._currentView.page));
                 $.mobile.loading("hide");
             }, this));
         }
