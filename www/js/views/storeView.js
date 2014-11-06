@@ -24,6 +24,23 @@ define([
             this.model.bind('change', this.render); // render the view when model changed
         },
 
+        destroy: function () {
+            if (this.map) {
+                this.map.off(); // remove all event listener
+                this.map.remove(); // Destroy the map completely
+                this.map = null;
+                delete this.map;
+            }
+
+            // COMPLETELY UNBIND THE VIEW
+            this.undelegateEvents();
+
+            this.$el.removeData().unbind(); 
+
+            // Remove view from DOM
+            this.$el.empty();
+        },
+
         render: function() {
             this.page.title = "Find nearest store";
             this.makeUp(this.page);
