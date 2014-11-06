@@ -24,7 +24,7 @@ define([
         entryListTemplateString: '{{~it :value:index}}\
                                     <li>\
                                         <a href="#entry/{{=value.Href}}" data-entry-href="{{=value.Href}}" name="entryDetailLink" >\
-                                            <img class="ui-li-thumb" src="{{? value.Properties.length > 0 && value.Properties[1].Value}}{{=value.Properties[1].Value}}{{??}}img/thumbnail-placeholder.png{{?}}" alt="{{! value.Title}}" />\
+                                            <img class="ui-li-thumb" src="{{? value.Properties.length > 1 && value.Properties[1].Value}}{{=value.Properties[1].Value}}{{??}}img/thumbnail-placeholder.png{{?}}" alt="{{! value.Title}}" />\
                                             <h2>{{! value.Title}}</h2>\
                                         </a>\
                                     </li>\

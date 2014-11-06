@@ -98,7 +98,14 @@ define([
         variantChange: function () {
             var selectedIndex = $(this.el).find("select[name='select-variant']").val();
             var variant = this.model.ChildCatalogEntries[selectedIndex];
-            $(this.el).find("img.thumbnail").attr("src", variant.Properties[1].Value.replace("/thumbnail", ""));
+            if (!variant) {
+                return;
+            }
+            var thumbnailUrl = "img/thumbnail-placeholder.png";
+            if (variant.Properties.length > 1 && variant.Properties[1].Value) {
+                thumbnailUrl = variant.Properties[1].Value.replace("/thumbnail", "");
+            }
+            $(this.el).find("img.thumbnail").attr("src", thumbnailUrl);
             this.changeTitle(variant.Title);
 
             $.when(this.serviceAPI.getEntry(variant.Href)).then($.proxy(function (data) {
