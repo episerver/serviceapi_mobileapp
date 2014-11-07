@@ -1,0 +1,9 @@
+<ul data-role="listview" name="nodeList" data-split-theme="a" data-inset="true" >
+    {{~it :value:index}}
+    <li>
+        <a href="#node/{{=value.Href}}" data-node-href="{{=value.Href}}" name="nodeDetailLink" >
+            <h2>{{! value.Title}}</h2>
+        </a>
+    </li>
+    {{~}}
+</ul>

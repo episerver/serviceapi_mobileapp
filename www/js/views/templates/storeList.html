@@ -1,0 +1,6 @@
+<select name="storeSelector">
+    <option value="-1">Select a store</option>
+    {{~it :value:index}}
+    <option value="{{= index}}">{{= value.Name}}</option>
+    {{~}}
+</select>

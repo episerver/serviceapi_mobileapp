@@ -2,26 +2,20 @@ define([
   "jquery",
   "backbone",
   "doT",
-  "views/baseView"
+  "views/baseView",
+  "text!views/templates/storeList.html"
 ], function (
     $,
     Backbone,
     doT,
-    _baseView
+    _baseView,
+    storeListTemplateString
 ) {
 
     var storeView = _baseView.extend({
         el: $("#storesContainer"), // content placeholder
 
         page: $('#storesPage'),
-
-        storeListTemplateString: '\
-                            <select name="storeSelector">\
-                                <option value="-1">Select a store</option>\
-                                {{~it :value:index}}\
-                                <option value="{{= index}}">{{= value.Name}}</option>\
-                                {{~}}\
-                            </select>',
 
         map: null,
 
@@ -32,7 +26,7 @@ define([
         initialize: function() {
             _.bindAll(this, 'render'); // every function that uses 'this' as the current object should be in here
 
-            this.storeListTemplate = doT.template(this.storeListTemplateString);
+            this.storeListTemplate = doT.template(storeListTemplateString);
 
             this.bind("reset", this.resetView);            this.model = new Backbone.Model();
             this.model.bind('change', this.render); // render the view when model changed

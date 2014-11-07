@@ -2,36 +2,20 @@ define([
   "jquery",
   "backbone",
   "doT",
-  "views/baseView"
+  "views/baseView",
+  "text!views/templates/entryDetail.html"
 ], function (
     $,
     Backbone,
     doT,
-    _baseView
+    _baseView,
+    entryDetailTemplateString
 ) {
 
     var entryView = _baseView.extend({
         el: $("#entryDetailContainer"), // content placeholder
 
         page: $('#entryDetailPage'),
-
-        entryDetailTemplateString: '<img class="thumbnail stack" src="{{? it.Assets && it.Assets[0]}}{{=it.Assets[0].Title}}{{??}}img/thumbnail-placeholder.png{{?}}" alt="{{! it.Name}}" />\
-                                    <h1>{{! it.Name}}</h1>\
-                                    <p>Price: <a class="price">{{? it.Prices && it.Prices[0]}}{{=it.Prices[0].Title}}{{?}}</a></p>\
-                                    <p>Inventory: <a name="inventory">{{? it.WarehouseInventories && it.WarehouseInventories[0]}}{{=it.WarehouseInventories[0].Title}}{{?}}</a></p>\
-                                    <label for="select-variant" class="select">Color:</label>\
-                                    {{? it.ChildCatalogEntries && it.ChildCatalogEntries.length > 1}}\
-                                        <select name="select-variant">\
-                                            {{~it.ChildCatalogEntries :value:index}}\
-                                            <option value="{{= index}}">{{= value.Title}}</option>\
-                                            {{~}}\
-                                        </select>\
-                                    {{?}}\
-                                    <input type="email" placeholder="Enter your email address" name="emailAddress" />\
-                                    <p name="makeOrderStatus" style="display: none"></p>\
-                                    <button id="makeOrder" data-entry-code="{{=it.Code}}">Order</button>\
-                                    <a id="storeLookup" href="#entry/{{=it.Code}}/stores" data-role="button">Find nearest store</a>\
-                                    <p class="description">{{! it.SeoInformation[0].Description}}</p>',
 
         serviceAPI: null,
 
@@ -44,7 +28,7 @@ define([
             _.bindAll(this, 'render'); // every function that uses 'this' as the current object should be in here
 
             // As these templates will be used repetitively we will precompile it to a named template
-            this.entryDetailTemplate = doT.template(this.entryDetailTemplateString);
+            this.entryDetailTemplate = doT.template(entryDetailTemplateString);
 
             this.model = new Backbone.Model();
             this.model.bind('change', this.render); // render the view when model changed

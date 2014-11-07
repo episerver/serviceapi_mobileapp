@@ -7,6 +7,7 @@ require.config( {
       "jquery": "libs/jquery.min",
       "jqm": "libs/jquery.mobile-1.4.4.min",
       "backbone": "libs/backbone-min",
+      'text': 'libs/text',
       "doT": "libs/doT.min",
       "linq": "libs/linq.min",
       "underscore": "libs/underscore-min"
