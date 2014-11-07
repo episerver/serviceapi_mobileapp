@@ -11,17 +11,34 @@ define([
 ) {
 
     var storeView = _baseView.extend({
-        el: $("#map_canvas"), // content placeholder
+        el: $("#storesContainer"), // content placeholder
 
         page: $('#storesPage'),
 
+        storeListTemplateString: '\
+                            <select name="storeSelector">\
+                                <option value="-1">Select a store</option>\
+                                {{~it :value:index}}\
+                                <option value="{{= index}}">{{= value.Name}}</option>\
+                                {{~}}\
+                            </select>',
+
         map: null,
+
+        events: {
+          'change select[name="storeSelector"]': 'storeChange'
+        },
 
         initialize: function() {
             _.bindAll(this, 'render'); // every function that uses 'this' as the current object should be in here
 
+            this.storeListTemplate = doT.template(this.storeListTemplateString);
+
             this.bind("reset", this.resetView);            this.model = new Backbone.Model();
             this.model.bind('change', this.render); // render the view when model changed
+
+            $(this.el).append('<div style="width:100%;height:400px" class="mapCanvas"></div>')
+                        .append('<div class="storeListContainer"></div>');
         },
 
         destroy: function () {
@@ -43,32 +60,36 @@ define([
 
         render: function() {
             this.page.title = "Find nearest store";
-            this.makeUp(this.page);
 
             if (!this.map) {
-                this.initMap();
+                this.initMap($(this.el).find(".mapCanvas")[0]);
             } else {
-                this.renderMarkers(this.model);
+                this.renderStores(this.model);
             }
 
             return this;
         },
 
-        initMap: function () {
+        initMap: function (mapContainer) {
             try {
                 // Initialize the map plugin
-                this.map = plugin.google.maps.Map.getMap(this.el);
+                this.map = plugin.google.maps.Map.getMap(mapContainer);
                 this.map.setMapTypeId(plugin.google.maps.MapTypeId.ROADMAP);
                 this.map.setZoom(8);
+                this.map.setMyLocationEnabled(true);
                 this.map.on(plugin.google.maps.event.MAP_READY, $.proxy(function () {
-                    this.renderMarkers(this.model);
+                    this.renderStores(this.model);
                 }, this));
             }  catch (ex) {
                 alert(ex);
             }
         },
 
-        renderMarkers: function (stores) {
+        renderStores: function (stores) {
+            // render store dropdownbox
+            $(this.el).find(".storeListContainer").html(this.storeListTemplate(stores));
+            this.makeUp(this.page);
+
             try {
                 // get current location and add it on map
                 this.map.getMyLocation($.proxy(function (location) {
@@ -77,23 +98,46 @@ define([
                       'target': location.latLng,
                       'zoom': 12
                     });
-                    this.map.addMarker({
-                        'position': location.latLng,
-                        'title': "You are here",
-                        'icon' : 'www/img/marker.png'
-                    });
                 }, this), function (errorMessage) {
                     alert("Error when getting current location: " + errorMessage);
                 });
-
-                $.each(stores, $.proxy(function (index, value) {
-                    this.map.addMarker({
-                        'position': { lat: value.Latitude, lng: value.Longitude },
-                        'title': value.Name + "\n" + value.Address
-                    });
-                }, this));
             }  catch (ex) {
                 alert(ex);
+            }
+
+            // add stores to map
+            $.each(stores, $.proxy(function (index, value) {
+                try {
+                    this.map.addMarker({
+                        'position': { lat: value.Latitude, lng: value.Longitude },
+                        'title': value.Name,
+                        'snippet': value.Address,
+                        'storeIndex': index
+                    }, $.proxy(function (marker) { // when marker has been rendered
+                        // listen for storeChange event to open the appropriated marker
+                        this.map.on("storeChange", $.proxy(function (storeIndex) {
+                            if (storeIndex === -1) {
+                                return;
+                            }
+                            if (marker.get("storeIndex") == storeIndex) {
+                                this.map.animateCamera({
+                                    'target': marker.get('position'),
+                                    'zoom': 12
+                                });
+                                marker.showInfoWindow();
+                            }
+                        }, this));
+                    }, this));
+                }  catch (ex) {
+                    alert(ex);
+                }
+            }, this));
+        },
+
+        storeChange: function () {
+            var selectedIndex = $(this.el).find("select[name='storeSelector']").val();
+            if (this.map) {
+                this.map.trigger("storeChange", selectedIndex);
             }
         }
     });
