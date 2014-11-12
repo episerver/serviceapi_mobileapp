@@ -36,7 +36,6 @@ define([
             "entry/:entryCode/stores": "findNearestStore",
             "node/*href": "loadNode",
             "entry/*href": "loadEntry",
-            //":route/:action": "loadView",
             "": "home"
         },
 
